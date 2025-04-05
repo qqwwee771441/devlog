@@ -28,15 +28,15 @@ public class UserSignupRequestDto {
     @NotBlank
     private String nickname;
 
+    @Size(min = 8, max = 20)
+    @NotBlank
+    private String password;
+
     @NotNull
     private LocalDate birth;
 
     @NotNull
     private Gender gender;
-
-    @NotBlank
-    @Size(min = 8, max = 20)
-    private String password;
 
     @NotNull
     private Provider provider;

@@ -1,7 +1,5 @@
 package com.apptive.devlog.auth.service;
 
-import com.apptive.devlog.auth.annotations.login.user.LoginUser;
-import com.apptive.devlog.auth.annotations.login.user.UserInfo;
 import com.apptive.devlog.auth.dto.*;
 import com.apptive.devlog.auth.utils.JwtTokenProvider;
 import com.apptive.devlog.domain.user.entity.User;
@@ -45,23 +43,35 @@ public class AuthService {
         return new UserLoginResponseDto(accessToken, refreshToken);
     }
 
+    @Transactional
     public UserRefreshResponseDto refresh(UserRefreshRequestDto requestDto) {
+        String accessToken = requestDto.getAccessToken();
         String refreshToken = requestDto.getRefreshToken();
-        if (!jwtTokenProvider.validateToken(refreshToken)) {
+
+        if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
             throw new IllegalArgumentException("Invalid refresh token");
         }
 
-        String email = jwtTokenProvider.getEmailFromToken(refreshToken);
-        String storedRefreshToken = redisTemplate.opsForValue().get("RT:" + email);
-        if (storedRefreshToken == null || !storedRefreshToken.equals(refreshToken)) {
+        String email = redisTemplate.opsForValue().get("RT:" + refreshToken);
+        if (email == null) {
             throw new IllegalArgumentException("Invalid refresh token");
         }
+
+        redisTemplate.delete("AT:" + accessToken);
+        redisTemplate.delete("RT:" + refreshToken);
 
         String newAccessToken = jwtTokenProvider.generateAccessToken(email, Role.USER);
-        return new UserRefreshResponseDto(newAccessToken);
+        String newRefreshToken = jwtTokenProvider.generateRefreshToken(email, Role.USER);
+
+        return new UserRefreshResponseDto(newAccessToken, newRefreshToken);
     }
 
-    public void logout(@LoginUser UserInfo userInfo) {
-        redisTemplate.delete("RT:" + userInfo.getEmail());
+    @Transactional
+    public void logout(UserLogoutRequestDto requestDto) {
+        String accessToken = requestDto.getAccessToken();
+        String refreshToken = requestDto.getRefreshToken();
+
+        redisTemplate.delete("AT:" + accessToken);
+        redisTemplate.delete("RT:" + refreshToken);
     }
 }

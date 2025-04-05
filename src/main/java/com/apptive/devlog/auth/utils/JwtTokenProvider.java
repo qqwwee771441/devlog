@@ -4,8 +4,6 @@ import com.apptive.devlog.domain.user.enums.Role;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -44,12 +42,14 @@ public class JwtTokenProvider {
     }
 
     public String generateAccessToken(String email, Role role) {
-        return generateToken(email, role, accessTokenExpiration);
+        String accessToken = generateToken(email, role, accessTokenExpiration);
+        redisTemplate.opsForValue().set("AT:" + accessToken, email, accessTokenExpiration, TimeUnit.MILLISECONDS);
+        return accessToken;
     }
 
     public String generateRefreshToken(String email, Role role) {
         String refreshToken = generateToken(email, role, refreshTokenExpiration);
-        redisTemplate.opsForValue().set("RT:"+email, refreshToken, refreshTokenExpiration, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set("RT:" + refreshToken, email, refreshTokenExpiration, TimeUnit.MILLISECONDS);
         return refreshToken;
     }
 
@@ -60,6 +60,16 @@ public class JwtTokenProvider {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public boolean validateAccessToken(String token) {
+        if (!validateToken(token)) return false;
+        return Boolean.TRUE.equals(redisTemplate.hasKey("AT:" + token));
+    }
+
+    public boolean validateRefreshToken(String token) {
+        if (!validateToken(token)) return false;
+        return Boolean.TRUE.equals(redisTemplate.hasKey("RT:" + token));
     }
 
     public String getEmailFromToken(String token) {

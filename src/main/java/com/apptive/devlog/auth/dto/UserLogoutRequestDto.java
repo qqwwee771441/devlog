@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserRefreshRequestDto {
+public class UserLogoutRequestDto {
     @NotBlank
     private String accessToken;
     @NotBlank
