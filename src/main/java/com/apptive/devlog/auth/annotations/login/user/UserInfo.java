@@ -1,8 +1,7 @@
-package com.apptive.devlog.auth.annotations.loginuser;
+package com.apptive.devlog.auth.annotations.login.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 

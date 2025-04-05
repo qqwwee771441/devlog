@@ -1,6 +1,6 @@
 package com.apptive.devlog.auth.filter;
 
-import com.apptive.devlog.auth.annotations.loginuser.UserInfo;
+import com.apptive.devlog.auth.annotations.login.user.UserInfo;
 import com.apptive.devlog.auth.utils.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

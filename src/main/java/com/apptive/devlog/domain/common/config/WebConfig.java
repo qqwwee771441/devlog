@@ -1,6 +1,6 @@
 package com.apptive.devlog.domain.common.config;
 
-import com.apptive.devlog.auth.annotations.loginuser.LoginUserArgumentResolver;
+import com.apptive.devlog.auth.annotations.login.user.LoginUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

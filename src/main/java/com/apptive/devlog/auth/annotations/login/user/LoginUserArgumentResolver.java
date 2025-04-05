@@ -1,4 +1,4 @@
-package com.apptive.devlog.auth.annotations.loginuser;
+package com.apptive.devlog.auth.annotations.login.user;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
