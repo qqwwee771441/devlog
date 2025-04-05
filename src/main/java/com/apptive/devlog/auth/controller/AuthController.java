@@ -1,9 +1,6 @@
 package com.apptive.devlog.auth.controller;
 
-import com.apptive.devlog.auth.dto.UserLoginRequestDto;
-import com.apptive.devlog.auth.dto.UserLoginResponseDto;
-import com.apptive.devlog.auth.dto.UserSignupResponseDto;
-import com.apptive.devlog.auth.dto.UserSignupRequestDto;
+import com.apptive.devlog.auth.dto.*;
 import com.apptive.devlog.auth.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +25,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<UserLoginResponseDto> login(@Valid @RequestBody UserLoginRequestDto requestDto) {
         UserLoginResponseDto responseDto = authService.login(requestDto);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<UserRefreshResponseDto> refresh(@Valid @RequestBody UserRefreshRequestDto requestDto) {
+        UserRefreshResponseDto responseDto = authService.refresh(requestDto);
         return ResponseEntity.ok(responseDto);
     }
 }

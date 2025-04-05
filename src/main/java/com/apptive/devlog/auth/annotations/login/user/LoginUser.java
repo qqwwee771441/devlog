@@ -1,4 +1,4 @@
-package com.apptive.devlog.auth.annotations.loginuser;
+package com.apptive.devlog.auth.annotations.login.user;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

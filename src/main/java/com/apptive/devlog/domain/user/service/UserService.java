@@ -1,7 +1,6 @@
 package com.apptive.devlog.domain.user.service;
 
-import com.apptive.devlog.auth.annotations.loginuser.LoginUser;
-import com.apptive.devlog.auth.annotations.loginuser.UserInfo;
+import com.apptive.devlog.auth.annotations.login.user.UserInfo;
 import com.apptive.devlog.domain.user.dto.UserProfileResponseDto;
 import com.apptive.devlog.domain.user.entity.User;
 import com.apptive.devlog.domain.user.repository.UserRepository;
