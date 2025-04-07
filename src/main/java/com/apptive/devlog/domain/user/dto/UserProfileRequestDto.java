@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserProfileRequestDto {
     @NotBlank
-    String email;
+    private String email;
 }

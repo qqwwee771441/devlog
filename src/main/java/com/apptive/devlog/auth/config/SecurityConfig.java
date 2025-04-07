@@ -1,6 +1,9 @@
 package com.apptive.devlog.auth.config;
 
 import com.apptive.devlog.auth.filter.JwtAuthenticationFilter;
+import com.apptive.devlog.auth.handler.OAuth2FailureHandler;
+import com.apptive.devlog.auth.handler.OAuth2SuccessHandler;
+import com.apptive.devlog.auth.service.CustomOAuth2UserService;
 import com.apptive.devlog.auth.service.CustomUserDetailsService;
 import com.apptive.devlog.auth.utils.JwtTokenProvider;
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +30,11 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomUserDetailsService customUserDetailsService;
     private final HttpSession httpSession;
+    // private final CustomOAuth2AuthorizationRequestResolver customOAuth2AuthorizationRequestResolver;
+    // private final CustomAuthorizationCodeTokenResponseClient customAuthorizationCodeTokenResponseClient;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2FailureHandler oAuth2FailureHandler;
 
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
@@ -48,16 +56,36 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/signup", "/auth/login", "/auth/refresh").permitAll()
+                        .requestMatchers("/", "/auth/signup", "/auth/login", "/auth/refresh").permitAll()
+                        .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/auth/logout", "/user/profile").hasRole("USER")
                         .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        // .loginPage("/login")
+                        .authorizationEndpoint(endpoint -> endpoint.baseUri("/oauth2/authorization")/* .authorizationRequestResolver(customOAuth2AuthorizationRequestResolver) */)
+                        .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+                        // .tokenEndpoint().accessTokenResponseClient(customAuthorizationCodeTokenResponseClient)
+                        .userInfoEndpoint(endpoint -> endpoint.userService(customOAuth2UserService))
+                        .successHandler(oAuth2SuccessHandler)
+                        .failureHandler(oAuth2FailureHandler)
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
     @Bean
-    public PasswordEncoder passswordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
+
+/*
+ * http://localhost:8080/oauth2/authorization/google
+ * https://accounts.google.com/o/oauth2/v2/auth
+ * http://localhost:8080/login/oauth2/code/google
+ * https://oauth2.googleapis.com/token
+ * https://www.googleapis.com/oauth2/v3/userinfo
+ * CustomOAuth2UserService
+ * OAuth2AuthenticationSuccessHandler
+ */

@@ -8,11 +8,11 @@ import java.time.LocalDate;
 
 @Getter
 public class UserProfileResponseDto {
-    private String email;
-    private String nickname;
-    private String name;
-    private LocalDate birthday;
-    private Gender gender;
+    private final String email;
+    private final String nickname;
+    private final String name;
+    private final LocalDate birthday;
+    private final Gender gender;
 
     public UserProfileResponseDto(User user) {
         this.email = user.getEmail();

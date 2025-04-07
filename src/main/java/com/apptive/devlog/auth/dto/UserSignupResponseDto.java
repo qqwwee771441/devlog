@@ -5,11 +5,9 @@ import lombok.Getter;
 
 @Getter
 public class UserSignupResponseDto {
-    private String email;
-    private String nickname;
+    private final String email;
 
     public UserSignupResponseDto(User user) {
         this.email = user.getEmail();
-        this.nickname = user.getNickname();
     }
 }
