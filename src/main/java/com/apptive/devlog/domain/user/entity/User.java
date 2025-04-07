@@ -1,6 +1,6 @@
 package com.apptive.devlog.domain.user.entity;
 
-import com.apptive.devlog.domain.common.entity.BaseEntity;
+import com.apptive.devlog.common.base.BaseEntity;
 import com.apptive.devlog.domain.user.enums.Gender;
 import com.apptive.devlog.domain.user.enums.Provider;
 import com.apptive.devlog.domain.user.enums.Role;
