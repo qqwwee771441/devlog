@@ -1,10 +1,8 @@
-package com.apptive.devlog.domain.common.initializer;
+package com.apptive.devlog.auth.initializer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +13,6 @@ public class RedisInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        redisTemplate.delete(redisTemplate.keys("RT:*"));
+        redisTemplate.delete(redisTemplate.keys("*"));
     }
 }

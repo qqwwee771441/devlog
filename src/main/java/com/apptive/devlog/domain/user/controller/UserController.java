@@ -1,9 +1,10 @@
 package com.apptive.devlog.domain.user.controller;
 
-import com.apptive.devlog.auth.annotations.login.user.LoginUser;
-import com.apptive.devlog.auth.annotations.login.user.UserInfo;
+import com.apptive.devlog.auth.annotations.inject.email.InjectEmail;
+import com.apptive.devlog.domain.user.dto.UserProfileRequestDto;
 import com.apptive.devlog.domain.user.dto.UserProfileResponseDto;
 import com.apptive.devlog.domain.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/profile")
-    public ResponseEntity<UserProfileResponseDto> getUserProfile(@LoginUser UserInfo userInfo) {
-        return ResponseEntity.ok(userService.getUserProfile(userInfo));
+    public ResponseEntity<UserProfileResponseDto> getUserProfile(@Valid @InjectEmail UserProfileRequestDto requestDto) {
+        return ResponseEntity.ok(userService.getUserProfile(requestDto));
     }
 }

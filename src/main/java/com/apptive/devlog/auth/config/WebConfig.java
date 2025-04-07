@@ -1,6 +1,7 @@
-package com.apptive.devlog.domain.common.config;
+package com.apptive.devlog.auth.config;
 
-import com.apptive.devlog.auth.annotations.login.user.LoginUserArgumentResolver;
+import com.apptive.devlog.auth.annotations.inject.token.InjectTokenArgumentResolver;
+import com.apptive.devlog.auth.annotations.inject.email.InjectEmailArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -11,10 +12,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    private final LoginUserArgumentResolver loginUserArgumentResolver;
+    private final InjectEmailArgumentResolver injectEmailArgumentResolver;
+    private final InjectTokenArgumentResolver injectTokenArgumentResolver;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(loginUserArgumentResolver);
+        resolvers.add(injectEmailArgumentResolver);
+        resolvers.add(injectTokenArgumentResolver);
     }
 }

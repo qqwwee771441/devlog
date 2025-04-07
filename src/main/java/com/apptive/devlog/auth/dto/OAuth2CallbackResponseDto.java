@@ -1,11 +1,11 @@
 package com.apptive.devlog.auth.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @AllArgsConstructor
-public class UserRefreshResponseDto {
+public class OAuth2CallbackResponseDto {
     private String accessToken;
     private String refreshToken;
 }
